@@ -9,23 +9,23 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/userManagment")
-public class UserController {
+@RequestMapping("/api/v1/users")
+public class UserRestController {
 
     private final UserService userService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserRestController(UserService userService) {
         this.userService = userService;
     }
 
-    @GetMapping("/users")
+    @GetMapping
     public List<User> findAll() {
         return userService.findAll();
     }
 
     @PostMapping
-    public User create(@RequestBody User user) {
-        return userService.save(user);
+    public User register(@RequestBody User user) {
+        return userService.register(user);
     }
 }
