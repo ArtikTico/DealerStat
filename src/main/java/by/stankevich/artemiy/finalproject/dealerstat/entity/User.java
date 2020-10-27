@@ -1,14 +1,16 @@
 package by.stankevich.artemiy.finalproject.dealerstat.entity;
 
 
-import by.stankevich.artemiy.finalproject.dealerstat.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.UUID;
 
 @Data
@@ -24,22 +26,29 @@ public class User {
     @Column(columnDefinition = "BINARY(16)")
     private UUID id;
 
-    @Column(name = "first_name",length = 128)
+    @Column(name = "first_name",length = 128, nullable = false)
     private String firstName;
 
-    @Column(name = "last_name", length = 128)
+    @Column(name = "last_name", length = 128, nullable = false)
     private String lastName;
 
-    @Column(name = "password", length = 128)
+    @Column(name = "password", length = 128, nullable = false)
     private String password;
 
     @Column(name = "emal", length = 128, unique = true, nullable = false)
     private String email;
 
-    @Column(name = "created_at")
-    private OffsetDateTime createdAt;
+    @Column(name = "created_at", nullable = false)
+    @Temporal(TemporalType.DATE)
+    private Date createdAt;
 
-    @Column(name = "role")
+    @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private UserRole role;
+
+    @Column(name = "status",nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
+
 }
