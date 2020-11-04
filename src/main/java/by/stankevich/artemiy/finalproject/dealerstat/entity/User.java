@@ -10,6 +10,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -45,13 +46,15 @@ public class User {
     @Temporal(TemporalType.DATE)
     private Date createdAt;
 
-    @Column(name = "role", nullable = false)
+    @ElementCollection(targetClass = UserRole.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
-    private UserRole role;
+    private Set<UserRole> role;
 
-    @Column(name = "status",nullable = false)
+    @ElementCollection(targetClass = Status.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_status", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private Set<Status> status;
 
 
 }
