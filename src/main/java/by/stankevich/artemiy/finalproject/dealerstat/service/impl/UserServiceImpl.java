@@ -3,6 +3,7 @@ package by.stankevich.artemiy.finalproject.dealerstat.service.impl;
 import by.stankevich.artemiy.finalproject.dealerstat.entity.Status;
 import by.stankevich.artemiy.finalproject.dealerstat.entity.User;
 import by.stankevich.artemiy.finalproject.dealerstat.entity.UserRole;
+import by.stankevich.artemiy.finalproject.dealerstat.mail.MailService;
 import by.stankevich.artemiy.finalproject.dealerstat.repository.UserRepository;
 import by.stankevich.artemiy.finalproject.dealerstat.security.SecurityConfiguration;
 import by.stankevich.artemiy.finalproject.dealerstat.service.UserService;
@@ -19,11 +20,13 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final SecurityConfiguration securityConfiguration;
+    private final MailService mailService;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, SecurityConfiguration securityConfiguration) {
+    public UserServiceImpl(UserRepository userRepository, SecurityConfiguration securityConfiguration, MailService mailService) {
         this.userRepository = userRepository;
         this.securityConfiguration = securityConfiguration;
+        this.mailService = mailService;
     }
 
     @Override
