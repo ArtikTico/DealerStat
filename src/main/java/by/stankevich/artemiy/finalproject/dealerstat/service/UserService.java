@@ -9,10 +9,12 @@ public interface UserService {
 
     public List<User> findAll();
 
-    User findUserByById (UUID id);
+    User findUserById (UUID id);
 
     public User register(User user);
 
-    public void deleteById(UUID uuid);
+    public void deleteById(UUID id);
+
+    public User updateUser(UUID id);
 
 }
