@@ -31,7 +31,7 @@ public class Comment {
     private User user;
 
     @Column(name = "created_at", nullable = false)
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
 
     @Column(name = "approved")
