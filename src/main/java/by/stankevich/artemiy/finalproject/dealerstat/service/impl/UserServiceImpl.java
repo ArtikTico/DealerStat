@@ -10,6 +10,7 @@ import by.stankevich.artemiy.finalproject.dealerstat.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.UUID;
@@ -37,7 +38,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findUserByById(UUID id) {
+    public User findUserById(UUID id) {
         User result = userRepository.findById(id).orElse(null);
         if (result == null) {
             log.warn("User has not found");
@@ -53,6 +54,7 @@ public class UserServiceImpl implements UserService {
         user.setStatus(Status.REQUESTED);
         user.setCreatedAt(new GregorianCalendar().getTime());
         User registeredUser = userRepository.save(user);
+//        mailService.sendEmailConfirmRegistration("artictico@gmail.com",user.getFirstName(), user.getLastName());
         log.info("IN register - user has successfully " + registeredUser);
         return registeredUser;
     }
@@ -66,4 +68,18 @@ public class UserServiceImpl implements UserService {
             log.info("IN deleteById - delete has been successfully");
         }
     }
+
+    @Override
+    public User updateUser(UUID id) {
+        User result = userRepository.findById(id).orElse(null);
+        if (result != null) {
+            result.setStatus(Status.APPROVED);
+            User saved = userRepository.save(result);
+            log.info("IN updateUser - has successfully updated");
+            return saved;
+        }
+        log.warn("IN updateUser - user with id " + id + " not found");
+        return result; //TODO: Избавиться от null
+    }
+
 }

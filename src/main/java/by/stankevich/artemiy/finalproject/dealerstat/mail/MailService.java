@@ -15,6 +15,7 @@ public class MailService {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(to);
         message.setSubject("Confirm registration");
+
         StringBuffer textMessage = new StringBuffer();
         textMessage.append("Congratulations " + firstName + " " + lastName + ", you are successfully " +
                 "registered as like TRADER");

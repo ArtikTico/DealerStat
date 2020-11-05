@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -26,35 +27,41 @@ public class User {
     @Column(columnDefinition = "BINARY(16)")
     private UUID id;
 
-    @Column(name = "first_name",length = 32, nullable = false)
+    @NotNull
+    @Column(name = "first_name")
     @Size(min = 3, max = 32)
     private String firstName;
 
-    @Column(name = "last_name", length = 32, nullable = false)
+    @Column(name = "last_name")
     @Size(min = 3, max = 32)
+    @NotNull
     private String lastName;
 
-    @Column(name = "password", length = 128, nullable = false)
+    @Column(name = "password")
+    @Size(min = 5, max = 100)
     @NotNull
     private String password;
 
-    @Column(name = "emal", length = 128, unique = true, nullable = false)
+    @Column(name = "emal", unique = true)
+    @Size(max = 50)
+    @NotNull
     @Email(message = "email address should be correctly", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
     private String email;
 
-    @Column(name = "created_at", nullable = false)
-    @Temporal(TemporalType.DATE)
+    @Column(name = "created_at")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
 
-    @ElementCollection(targetClass = UserRole.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
-    private Set<UserRole> role;
+    @Column(name = "role")
+    private UserRole role;
 
-    @ElementCollection(targetClass = Status.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_status", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
-    private Set<Status> status;
+    @Column(name = "status")
+    private Status status;
+
+    @OneToMany(mappedBy = "user")
+    private Set<Comment> comment;
 
 
 }
