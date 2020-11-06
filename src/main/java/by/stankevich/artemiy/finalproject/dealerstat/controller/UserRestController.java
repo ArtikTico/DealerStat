@@ -13,7 +13,7 @@ import java.util.UUID;
 
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api")
 public class UserRestController {
 
     private final UserService userService;
@@ -23,7 +23,7 @@ public class UserRestController {
         this.userService = userService;
     }
 
-    @GetMapping
+    @GetMapping("/users")
     public ResponseEntity<List<User>> findAll() {
         final List<User> list = userService.findAll();
         return list != null && !list.isEmpty()
@@ -32,13 +32,13 @@ public class UserRestController {
 
     }
 
-    @PostMapping
+    @PostMapping("/users")
     public ResponseEntity<User> register(@RequestBody @Valid User user) {
         userService.register(user);
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/users/{id}")
     public ResponseEntity<User> findUserById(@PathVariable @Valid UUID id) {
         User user = userService.findUserById(id);
         return id != null
@@ -46,7 +46,7 @@ public class UserRestController {
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/users/{id}")
     public ResponseEntity<User> updateUserById(@PathVariable UUID id) {
         if (id != null) {
             userService.updateUser(id);

@@ -1,11 +1,11 @@
 package by.stankevich.artemiy.finalproject.dealerstat.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -60,6 +60,7 @@ public class User {
     @Column(name = "status")
     private Status status;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user")
     private Set<Comment> comment;
 

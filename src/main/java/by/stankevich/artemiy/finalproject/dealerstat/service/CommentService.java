@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public interface CommentService {
     //POST
-    public Comment addingCommentsUser(Comment comment, UUID id);
+    public void addingCommentsUser(Comment comment, UUID id);
     //GET LIST
     public List<Comment> getUserCommentsList(User user);
     //GET by ID
