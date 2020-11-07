@@ -7,14 +7,14 @@ import java.util.List;
 import java.util.UUID;
 
 public interface CommentService {
-    //POST
-    public void addingCommentsUser(Comment comment, UUID id);
-    //GET LIST
-    public List<Comment> getUserCommentsList(User user);
-    //GET by ID
-    public Comment getUserCommentById(User user , UUID id);
-    //DELETE by ID
-    public void deleteCommentUserById(User user, UUID id);
-    //PUT by ID
-    public Comment updateCommentById(UUID id);
+
+    void addingCommentsUser(Comment comment, UUID id);
+
+    List<Comment> getUserCommentsList(UUID id);
+
+    Comment getUserCommentById(User user , UUID id);
+
+    void deleteCommentUserById(User user, UUID id);
+
+    Comment updateCommentById(UUID id);
 }

@@ -1,6 +1,7 @@
 package by.stankevich.artemiy.finalproject.dealerstat.service.impl;
 
 import by.stankevich.artemiy.finalproject.dealerstat.entity.Comment;
+import by.stankevich.artemiy.finalproject.dealerstat.entity.Status;
 import by.stankevich.artemiy.finalproject.dealerstat.entity.User;
 import by.stankevich.artemiy.finalproject.dealerstat.repository.CommentRepository;
 import by.stankevich.artemiy.finalproject.dealerstat.repository.UserRepository;
@@ -30,22 +31,19 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public void addingCommentsUser(Comment comment, UUID id) {
         User user = userService.findUserById(id);
-        if (user != null && comment != null) {
+        if (user != null && comment != null && user.getStatus().equals(Status.APPROVED)) {
             comment.setUser(user);
             comment.setApproved(false);
             log.info("IN addingCommentUser - comment for this user has been successfully adding");
             commentRepository.save(comment);
-//            Set<Comment> commentStream = Stream.of(comment).collect(Collectors.toSet());
-//  TODO: fix user.setComment(commentStream);
-            log.info("IN addingCommentsUser - commit was been successfully create " + comment);
         } else {
             log.warn("Not Found user with id = " + id);
         }
     }
 
     @Override
-    public List<Comment> getUserCommentsList(User user) {
-        List<Comment> result = commentRepository.findAllById(Collections.singleton(user.getId()));
+    public List<Comment> getUserCommentsList(UUID id) {
+        List<Comment> result = commentRepository.findAllByUserId(id);
         log.info("IN getUserCommentsList - comment found , " + result.size());
         return result;
     }

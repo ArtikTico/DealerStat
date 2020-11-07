@@ -3,20 +3,17 @@ package by.stankevich.artemiy.finalproject.dealerstat.service.impl;
 import by.stankevich.artemiy.finalproject.dealerstat.entity.Status;
 import by.stankevich.artemiy.finalproject.dealerstat.entity.User;
 import by.stankevich.artemiy.finalproject.dealerstat.entity.UserRole;
+import by.stankevich.artemiy.finalproject.dealerstat.exceptions.ResourceNotFoundException;
 import by.stankevich.artemiy.finalproject.dealerstat.mail.MailService;
 import by.stankevich.artemiy.finalproject.dealerstat.repository.UserRepository;
 import by.stankevich.artemiy.finalproject.dealerstat.security.SecurityConfiguration;
 import by.stankevich.artemiy.finalproject.dealerstat.service.UserService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.UUID;
 
 @Service
-@Slf4j
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -33,18 +30,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> findAll() {
         List<User> result = userRepository.findAll();
-        log.info("IN findAll - users found , " + result.size());
+        if (result.isEmpty()) {
+            throw new ResourceNotFoundException("list users not found");
+        }
         return result;
     }
 
     @Override
     public User findUserById(UUID id) {
-        User result = userRepository.findById(id).orElse(null);
-        if (result == null) {
-            log.warn("User has not found");
-        }
-        log.info("IN findUserById has found user:  " + result);
-        return result;
+        return userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User has not found"));
     }
 
     @Override
@@ -54,29 +49,19 @@ public class UserServiceImpl implements UserService {
         user.setStatus(Status.REQUESTED);
         User registeredUser = userRepository.save(user);
 //        mailService.sendEmailConfirmRegistration("artictico@gmail.com",user.getFirstName(), user.getLastName());
-        log.info("IN register - user has successfully " + registeredUser);
         return registeredUser;
     }
 
     @Override
-    public void deleteById(UUID id) {
-        if (id == null) {
-            log.warn("Id has not found!");
-        } else {
-            userRepository.deleteById(id);
-            log.info("IN deleteById - delete has been successfully");
-        }
+    public User approveUser(UUID id) {
+        return userRepository.findById(id).map(user -> {
+            user.setStatus(Status.APPROVED);
+            return userRepository.save(user);
+        }).orElseThrow(() -> new ResourceNotFoundException("Not found user by id: " + id));
     }
 
     @Override
-    public void updateUser(UUID id) {
-        if (id != null) {
-            User result = userRepository.findById(id).get();
-            result.setStatus(Status.APPROVED);
-            userRepository.save(result);
-            log.info("IN updateUser - has successfully updated");
-        }
-        log.warn("IN updateUser - user not found");
+    public void deleteUserById(UUID id) {
+        userRepository.deleteById(id);
     }
-
 }
