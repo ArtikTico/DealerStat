@@ -7,14 +7,14 @@ import java.util.UUID;
 
 public interface UserService {
 
-    public List<User> findAll();
+    List<User> findAll();
 
     User findUserById (UUID id);
 
-    public User register(User user);
+    User register(User user);
 
-    public void deleteById(UUID id);
+    void deleteUserById(UUID id);
 
-    public void updateUser(UUID id);
+    User approveUser(UUID id);
 
 }

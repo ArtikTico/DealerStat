@@ -1,6 +1,8 @@
 package by.stankevich.artemiy.finalproject.dealerstat.controller;
 
 import by.stankevich.artemiy.finalproject.dealerstat.entity.User;
+import by.stankevich.artemiy.finalproject.dealerstat.exceptions.ResourceNotFoundException;
+import by.stankevich.artemiy.finalproject.dealerstat.repository.UserRepository;
 import by.stankevich.artemiy.finalproject.dealerstat.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,10 +19,12 @@ import java.util.UUID;
 public class UserRestController {
 
     private final UserService userService;
+    private final UserRepository userRepository;
 
     @Autowired
-    public UserRestController(UserService userService) {
+    public UserRestController(UserService userService, UserRepository userRepository) {
         this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     @GetMapping("/users")
@@ -39,7 +43,7 @@ public class UserRestController {
     }
 
     @GetMapping("/users/{userId}")
-    public ResponseEntity<User> findUserById(@PathVariable (value = "userId") UUID id) {
+    public ResponseEntity<User> findUserById(@PathVariable(value = "userId") UUID id) {
         User user = userService.findUserById(id);
         return id != null
                 ? new ResponseEntity<>(user, HttpStatus.FOUND)
@@ -47,12 +51,19 @@ public class UserRestController {
     }
 
     @PutMapping("/users/{id}")
-    public ResponseEntity<User> updateUserById(@PathVariable UUID id) {
-        if (id != null) {
-            userService.updateUser(id);
-            return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<User> approveUser(@PathVariable UUID id) {
+        User user = userService.approveUser(id);
+        if (id == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
+    @DeleteMapping("/users/{userId}")
+    public ResponseEntity<?> deleteUserById(@PathVariable(value = "userId") UUID id) {
+        return userRepository.findById(id).map(post -> {
+            userRepository.delete(post);
+            return ResponseEntity.ok().build();
+        }).orElseThrow(() -> new ResourceNotFoundException("PostId " + id + " not found"));
+    }
 }

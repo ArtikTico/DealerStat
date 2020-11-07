@@ -55,10 +55,4 @@ public class User extends AuditModel {
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private Status status;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Comment> comment;
-
-
 }
