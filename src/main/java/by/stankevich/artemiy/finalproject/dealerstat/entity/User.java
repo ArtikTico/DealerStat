@@ -19,7 +19,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Entity
 @Table(name = "user")
-public class User {
+public class User extends AuditModel {
 
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -47,10 +47,6 @@ public class User {
     @NotNull
     @Email(message = "email address should be correctly", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
     private String email;
-
-    @Column(name = "created_at")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role")

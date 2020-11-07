@@ -33,13 +33,13 @@ public class UserRestController {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<User> register(@RequestBody @Valid User user) {
+    public ResponseEntity<User> register(@Valid @RequestBody User user) {
         userService.register(user);
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
-    @GetMapping("/users/{id}")
-    public ResponseEntity<User> findUserById(@PathVariable @Valid UUID id) {
+    @GetMapping("/users/{userId}")
+    public ResponseEntity<User> findUserById(@PathVariable (value = "userId") UUID id) {
         User user = userService.findUserById(id);
         return id != null
                 ? new ResponseEntity<>(user, HttpStatus.FOUND)
