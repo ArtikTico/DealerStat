@@ -15,6 +15,6 @@ public interface UserService {
 
     public void deleteById(UUID id);
 
-    public User updateUser(UUID id);
+    public void updateUser(UUID id);
 
 }

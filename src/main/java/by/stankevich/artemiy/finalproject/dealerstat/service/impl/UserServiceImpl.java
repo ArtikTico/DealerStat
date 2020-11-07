@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> findAll() {
         List<User> result = userRepository.findAll();
-        log.info("IN findAll - users found, " + result.size());
+        log.info("IN findAll - users found , " + result.size());
         return result;
     }
 
@@ -70,16 +70,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUser(UUID id) {
-        User result = userRepository.findById(id).orElse(null);
-        if (result != null) {
+    public void updateUser(UUID id) {
+        if (id != null) {
+            User result = userRepository.findById(id).get();
             result.setStatus(Status.APPROVED);
-            User saved = userRepository.save(result);
+            userRepository.save(result);
             log.info("IN updateUser - has successfully updated");
-            return saved;
         }
-        log.warn("IN updateUser - user with id " + id + " not found");
-        return result; //TODO: Избавиться от null
+        log.warn("IN updateUser - user not found");
     }
 
 }
