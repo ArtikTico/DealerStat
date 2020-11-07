@@ -52,7 +52,6 @@ public class UserServiceImpl implements UserService {
         user.setPassword(securityConfiguration.passwordEncoder().encode(user.getPassword()));
         user.setRole(UserRole.TRADER);
         user.setStatus(Status.REQUESTED);
-        user.setCreatedAt(new GregorianCalendar().getTime());
         User registeredUser = userRepository.save(user);
 //        mailService.sendEmailConfirmRegistration("artictico@gmail.com",user.getFirstName(), user.getLastName());
         log.info("IN register - user has successfully " + registeredUser);

@@ -33,7 +33,6 @@ public class CommentServiceImpl implements CommentService {
         if (user != null && comment != null) {
             comment.setUser(user);
             comment.setApproved(false);
-            comment.setCreatedAt(new GregorianCalendar().getTime());
             log.info("IN addingCommentUser - comment for this user has been successfully adding");
             commentRepository.save(comment);
 //            Set<Comment> commentStream = Stream.of(comment).collect(Collectors.toSet());

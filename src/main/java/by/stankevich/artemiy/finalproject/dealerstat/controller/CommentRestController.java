@@ -21,9 +21,9 @@ public class CommentRestController {
         this.commentService = commentService;
     }
 
-    @PostMapping("/articles/{id}/comments")
-    public ResponseEntity<?> createCommentForUserById(@RequestBody Comment comment,
-                                                      @PathVariable UUID id) {
+    @PostMapping("/user/{userId}/comments")
+    public ResponseEntity<?> createCommentForUserById(@Valid @RequestBody Comment comment,
+                                                      @PathVariable (value = "userId") UUID id) {
         if (comment != null && id != null) {
             commentService.addingCommentsUser(comment, id);
             return new ResponseEntity<>(HttpStatus.CREATED);
