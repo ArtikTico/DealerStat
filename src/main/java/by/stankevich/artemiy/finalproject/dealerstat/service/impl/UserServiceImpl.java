@@ -47,9 +47,8 @@ public class UserServiceImpl implements UserService {
         user.setPassword(securityConfiguration.passwordEncoder().encode(user.getPassword()));
         user.setRole(UserRole.TRADER);
         user.setStatus(Status.REQUESTED);
-        User registeredUser = userRepository.save(user);
-//        mailService.sendEmailConfirmRegistration("artictico@gmail.com",user.getFirstName(), user.getLastName());
-        return registeredUser;
+        //mailService.sendEmailConfirmRegistration("artictico@gmail.com",user.getFirstName(), user.getLastName());
+        return userRepository.save(user);
     }
 
     @Override
