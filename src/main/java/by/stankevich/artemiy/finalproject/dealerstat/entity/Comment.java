@@ -1,11 +1,13 @@
 package by.stankevich.artemiy.finalproject.dealerstat.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import java.util.UUID;
 
@@ -14,7 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Entity
 @Table(name = "comment")
-public class Comment extends AuditModel{
+public class Comment extends AuditModel {
 
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -25,9 +27,10 @@ public class Comment extends AuditModel{
     @Column(name = "text")
     private String messageText;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
     private User user;
 
     @Column(name = "approved")

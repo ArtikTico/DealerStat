@@ -4,16 +4,13 @@ import by.stankevich.artemiy.finalproject.dealerstat.entity.Comment;
 import by.stankevich.artemiy.finalproject.dealerstat.entity.Status;
 import by.stankevich.artemiy.finalproject.dealerstat.entity.User;
 import by.stankevich.artemiy.finalproject.dealerstat.repository.CommentRepository;
-import by.stankevich.artemiy.finalproject.dealerstat.repository.UserRepository;
 import by.stankevich.artemiy.finalproject.dealerstat.service.CommentService;
 import by.stankevich.artemiy.finalproject.dealerstat.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.List;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -44,22 +41,24 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public List<Comment> getUserCommentsList(UUID id) {
         List<Comment> result = commentRepository.findAllByUserId(id);
-        log.info("IN getUserCommentsList - comment found , " + result.size());
+        log.info("IN getUserCommentsList - comment found , " + result);
         return result;
     }
 
     @Override
-    public Comment getUserCommentById(User user, UUID id) {
-        return null;
+    public void deleteByComment(Comment comment) {
+        commentRepository.delete(comment);
     }
 
     @Override
-    public void deleteCommentUserById(User user, UUID id) {
-
+    public Comment findCommentByIdAndUser(UUID id, User user) {
+        return commentRepository.findCommentByIdAndUser(id,user);
     }
+
 
     @Override
     public Comment updateCommentById(UUID id) {
         return null;
     }
+
 }

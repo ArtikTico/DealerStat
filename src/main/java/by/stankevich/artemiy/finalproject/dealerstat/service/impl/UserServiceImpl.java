@@ -60,6 +60,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User rejectedUser(UUID id) {
+        return userRepository.findById(id).map(user -> {
+            user.setStatus(Status.REJECTED);
+            return userRepository.save(user);
+        }).orElseThrow(() -> new ResourceNotFoundException("Not found user by id: " + id));
+    }
+
+    @Override
     public void deleteUserById(UUID id) {
         userRepository.deleteById(id);
     }
