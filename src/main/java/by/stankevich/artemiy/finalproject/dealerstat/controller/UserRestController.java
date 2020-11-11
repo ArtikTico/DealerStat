@@ -1,7 +1,7 @@
 package by.stankevich.artemiy.finalproject.dealerstat.controller;
 
+import by.stankevich.artemiy.finalproject.dealerstat.entity.Status;
 import by.stankevich.artemiy.finalproject.dealerstat.entity.User;
-import by.stankevich.artemiy.finalproject.dealerstat.exceptions.ResourceNotFoundException;
 import by.stankevich.artemiy.finalproject.dealerstat.repository.UserRepository;
 import by.stankevich.artemiy.finalproject.dealerstat.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,18 +13,15 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
-
 @RestController
 @RequestMapping("/api")
 public class UserRestController {
 
     private final UserService userService;
-    private final UserRepository userRepository;
 
     @Autowired
     public UserRestController(UserService userService, UserRepository userRepository) {
         this.userService = userService;
-        this.userRepository = userRepository;
     }
 
     @GetMapping("/users")
@@ -59,11 +56,24 @@ public class UserRestController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @DeleteMapping("/users/{userId}")
-    public ResponseEntity<?> deleteUserById(@PathVariable(value = "userId") UUID id) {
-        return userRepository.findById(id).map(post -> {
-            userRepository.delete(post);
-            return ResponseEntity.ok().build();
-        }).orElseThrow(() -> new ResourceNotFoundException("PostId " + id + " not found"));
+    @PatchMapping("/users/{id}")
+    public ResponseEntity<User> rejectedUser(@PathVariable UUID id) {
+        User user = userService.rejectedUser(id);
+        if (id == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+        }
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
+
+    @DeleteMapping("/users/{userId}")
+    public ResponseEntity<?> deleteUserByIdIfRejected(@PathVariable(value = "userId") UUID id) {
+        User user = userService.findUserById(id);
+        if (user.getStatus().equals(Status.REJECTED)) {
+            userService.deleteUserById(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+        }
+    }
+
 }

@@ -17,4 +17,6 @@ public interface UserService {
 
     User approveUser(UUID id);
 
+    User rejectedUser(UUID id);
+
 }
