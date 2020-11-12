@@ -33,7 +33,6 @@ public class User extends AuditModel {
     @NotNull
     private String lastName;
 
-    @Column(name = "password")
     @Size(min = 5, max = 100)
     @NotNull
     private String password;
@@ -45,10 +44,10 @@ public class User extends AuditModel {
     private String email;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "role", length = 50)
     private UserRole role;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status", length = 50)
-    private Status status;
+    private boolean status;
+
+    private double avgRating;
+
 }

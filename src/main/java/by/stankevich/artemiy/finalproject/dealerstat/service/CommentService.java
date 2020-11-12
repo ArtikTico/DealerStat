@@ -7,13 +7,9 @@ import java.util.List;
 import java.util.UUID;
 public interface CommentService {
 
-    void addingCommentsUser(Comment comment, UUID id);
+    Comment addingCommentsUser(Comment comment, UUID userId);
 
     List<Comment> getUserCommentsList(UUID id);
 
-    void deleteByComment(Comment comment);
-
     Comment findCommentByIdAndUser(UUID id, User user);
-
-    Comment updateCommentById(UUID id);
 }
