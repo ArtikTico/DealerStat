@@ -1,4 +1,4 @@
-package by.stankevich.artemiy.finalproject.dealerstat.security;
+package by.stankevich.artemiy.finalproject.dealerstat.configuration;
 
 import by.stankevich.artemiy.finalproject.dealerstat.entity.UserRole;
 import org.springframework.context.annotation.Bean;

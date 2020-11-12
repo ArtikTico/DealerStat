@@ -7,8 +7,11 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.UUID;
 
 @Data
@@ -33,6 +36,11 @@ public class Comment extends AuditModel {
     @JsonIgnore
     private User user;
 
-    @Column(name = "approved")
     private boolean approved;
+
+    @NotNull
+    @Size(min = 1, message = "rating couldn't to be a less than 1")
+    @Size(max = 5, message = "rating couldn't to be a greater than 5")
+    private int rating;
+
 }

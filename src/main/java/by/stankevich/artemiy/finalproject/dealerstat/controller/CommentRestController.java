@@ -24,10 +24,10 @@ public class CommentRestController {
     }
 
     @PostMapping("/{userId}/comments")
-    public ResponseEntity<?> createCommentForUserById(@Valid @RequestBody Comment comment,
-                                                      @PathVariable(value = "userId") UUID id) {
-        if (comment != null && id != null) {
-            commentService.addingCommentsUser(comment, id);
+    public ResponseEntity<?> createCommentForUser(@Valid @RequestBody Comment comment,
+                                                  @PathVariable (value = "userId") UUID id) {
+        if (comment != null) {
+            commentService.addingCommentsUser(comment,id);
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -48,14 +48,5 @@ public class CommentRestController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
-    @DeleteMapping("/{userId}/comments/{commentId}")
-    public ResponseEntity<?> deleteCommentById(@PathVariable(value = "userId") User user,
-                                               @PathVariable(value = "commentId") UUID commentId) {
-        Comment comment = commentService.findCommentByIdAndUser(commentId, user);
-        commentService.deleteByComment(comment);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
 
 }

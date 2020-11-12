@@ -1,12 +1,11 @@
 package by.stankevich.artemiy.finalproject.dealerstat.service.impl;
 
-import by.stankevich.artemiy.finalproject.dealerstat.entity.Status;
 import by.stankevich.artemiy.finalproject.dealerstat.entity.User;
 import by.stankevich.artemiy.finalproject.dealerstat.entity.UserRole;
 import by.stankevich.artemiy.finalproject.dealerstat.exceptions.ResourceNotFoundException;
 import by.stankevich.artemiy.finalproject.dealerstat.mail.MailService;
 import by.stankevich.artemiy.finalproject.dealerstat.repository.UserRepository;
-import by.stankevich.artemiy.finalproject.dealerstat.security.SecurityConfiguration;
+import by.stankevich.artemiy.finalproject.dealerstat.configuration.SecurityConfiguration;
 import by.stankevich.artemiy.finalproject.dealerstat.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,10 +42,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findUserByEmail(String email) {
+        return userRepository.findUserByEmail(email);
+    }
+
+    @Override
     public User register(User user) {
         user.setPassword(securityConfiguration.passwordEncoder().encode(user.getPassword()));
         user.setRole(UserRole.TRADER);
-        user.setStatus(Status.REQUESTED);
+        user.setStatus(false);
         //mailService.sendEmailConfirmRegistration("artictico@gmail.com",user.getFirstName(), user.getLastName());
         return userRepository.save(user);
     }
@@ -54,7 +58,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User approveUser(UUID id) {
         return userRepository.findById(id).map(user -> {
-            user.setStatus(Status.APPROVED);
+            user.setStatus(false);
             return userRepository.save(user);
         }).orElseThrow(() -> new ResourceNotFoundException("Not found user by id: " + id));
     }
@@ -62,13 +66,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public User rejectedUser(UUID id) {
         return userRepository.findById(id).map(user -> {
-            user.setStatus(Status.REJECTED);
+            user.setStatus(false);
             return userRepository.save(user);
         }).orElseThrow(() -> new ResourceNotFoundException("Not found user by id: " + id));
     }
 
-    @Override
-    public void deleteUserById(UUID id) {
-        userRepository.deleteById(id);
-    }
+
 }

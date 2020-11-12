@@ -11,9 +11,9 @@ public interface UserService {
 
     User findUserById (UUID id);
 
-    User register(User user);
+    User findUserByEmail(String email);
 
-    void deleteUserById(UUID id);
+    User register(User user);
 
     User approveUser(UUID id);
 
