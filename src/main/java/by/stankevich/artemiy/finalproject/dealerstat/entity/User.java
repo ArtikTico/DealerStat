@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -39,7 +38,7 @@ public class User extends AuditModel {
     @NotNull
     private String password;
 
-    @Column(name = "emal", unique = true)
+    @Column(name = "email", unique = true)
     @Size(max = 50)
     @NotNull
     @Email(message = "email address should be correctly", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
