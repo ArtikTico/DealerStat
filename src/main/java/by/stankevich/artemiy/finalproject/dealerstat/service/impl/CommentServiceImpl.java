@@ -26,7 +26,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Comment addingCommentsUser(Comment comment, UUID userId) {
+    public Comment saveComment(Comment comment, UUID userId) {
         User user = userRepository.getOne(userId);
         comment.setApproved(false);
         comment.setUser(user);
@@ -41,8 +41,19 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Comment findCommentByIdAndUser(UUID id, User user) {
-        return commentRepository.findCommentByIdAndUser(id,user);
+    public Comment approveCommentById(UUID id) {
+        Comment comment = commentRepository.findById(id).get();
+        comment.setApproved(true);
+        commentRepository.save(comment);
+        return comment;
+    }
+
+    @Override
+    public Comment rejectCommentById(UUID id) {
+        Comment comment = commentRepository.findById(id).get();
+        comment.setApproved(false);
+        commentRepository.save(comment);
+        return comment;
     }
 
 }

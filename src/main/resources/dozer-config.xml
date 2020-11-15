@@ -5,6 +5,10 @@
       http://dozer.sourceforge.net/schema/beanmapping.xsd">
     <mapping>
         <class-a>by.stankevich.artemiy.finalproject.dealerstat.entity.User</class-a>
-        <class-b>by.stankevich.artemiy.finalproject.dealerstat.dto.UserDto</class-b>
+        <class-b>by.stankevich.artemiy.finalproject.dealerstat.dto.UserDTO</class-b>
+    </mapping>
+    <mapping>
+        <class-a>by.stankevich.artemiy.finalproject.dealerstat.entity.Comment</class-a>
+        <class-b>by.stankevich.artemiy.finalproject.dealerstat.dto.CommentDTO</class-b>
     </mapping>
 </mappings>

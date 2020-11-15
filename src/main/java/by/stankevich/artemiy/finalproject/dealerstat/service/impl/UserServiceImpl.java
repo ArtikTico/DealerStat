@@ -1,14 +1,16 @@
 package by.stankevich.artemiy.finalproject.dealerstat.service.impl;
 
+import by.stankevich.artemiy.finalproject.dealerstat.configuration.SecurityConfiguration;
 import by.stankevich.artemiy.finalproject.dealerstat.entity.User;
 import by.stankevich.artemiy.finalproject.dealerstat.entity.UserRole;
 import by.stankevich.artemiy.finalproject.dealerstat.exceptions.ResourceNotFoundException;
 import by.stankevich.artemiy.finalproject.dealerstat.mail.MailService;
 import by.stankevich.artemiy.finalproject.dealerstat.repository.UserRepository;
-import by.stankevich.artemiy.finalproject.dealerstat.configuration.SecurityConfiguration;
 import by.stankevich.artemiy.finalproject.dealerstat.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -51,14 +53,22 @@ public class UserServiceImpl implements UserService {
         user.setPassword(securityConfiguration.passwordEncoder().encode(user.getPassword()));
         user.setRole(UserRole.TRADER);
         user.setStatus(false);
-        //mailService.sendEmailConfirmRegistration("artictico@gmail.com",user.getFirstName(), user.getLastName());
+        user.setActivationCode(UUID.randomUUID().toString());
+        if (!StringUtils.isEmpty(user.getEmail())) {
+            String message = String.format(
+                    "Hello, %s! \n" +
+                            "Welcome to dealerstat. Please, visit next link: http://localhost:8075/activate/%s",
+                    user.getFirstName(),
+                    user.getActivationCode());
+            mailService.sendEmailConfirmRegistration(user.getEmail(), "Activation code", message);
+        }
         return userRepository.save(user);
     }
 
     @Override
     public User approveUser(UUID id) {
         return userRepository.findById(id).map(user -> {
-            user.setStatus(false);
+            user.setStatus(true);
             return userRepository.save(user);
         }).orElseThrow(() -> new ResourceNotFoundException("Not found user by id: " + id));
     }
@@ -71,5 +81,15 @@ public class UserServiceImpl implements UserService {
         }).orElseThrow(() -> new ResourceNotFoundException("Not found user by id: " + id));
     }
 
-
+    @Override
+    public boolean activateUser(String code) {
+        User user = userRepository.findByActivationCode(code);
+        if (user == null) {
+            return false;
+        }
+        user.setActivationCode(null);
+        user.setStatus(true);
+        userRepository.save(user);
+        return true;
+    }
 }

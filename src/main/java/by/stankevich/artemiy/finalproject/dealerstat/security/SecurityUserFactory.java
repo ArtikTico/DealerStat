@@ -13,14 +13,14 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public final class SecurityUserFactory {
 
-    public static SecurityUser create(User user) {
-        return new SecurityUser(
+    public static CustomUserDetails fromEntityUserToCustomUserDetails(User user) {
+        return new CustomUserDetails(
                 user.getId(),
                 user.getFirstName(),
                 user.getLastName(),
                 user.getPassword(),
                 user.getEmail(),
-                user.getCreatedAt(),
+                user.getUpdatedAt(),
                 user.isStatus(),
                 mapToGrantedAuthorities(user.getRole().getInfo())
         );

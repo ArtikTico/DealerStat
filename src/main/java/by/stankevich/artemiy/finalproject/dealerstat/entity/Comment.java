@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import org.hibernate.validator.constraints.Length;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -28,6 +26,7 @@ public class Comment extends AuditModel {
     private UUID id;
 
     @Column(name = "text")
+    @NotNull
     private String messageText;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
