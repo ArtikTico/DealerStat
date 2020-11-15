@@ -11,17 +11,12 @@ public class MailService {
     @Autowired
     private JavaMailSender mailSender;
 
-    public void sendEmailConfirmRegistration(String to, String firstName, String lastName) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(to);
-        message.setSubject("Confirm registration");
-
-        StringBuffer textMessage = new StringBuffer();
-        textMessage.append("Congratulations " + firstName + " " + lastName + ", you are successfully " +
-                "registered as like TRADER");
-        textMessage.append("\nFrom this moment on, your account is active and you have access " +
-                "to add goods for game items.");
-        message.setText(textMessage.toString());
-        mailSender.send(message);
+    public void sendEmailConfirmRegistration(String emailTo, String subject, String message) {
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setFrom("artictico@gmail.com");
+        mailMessage.setTo(emailTo);
+        mailMessage.setSubject(subject);
+        mailMessage.setText(message);
+        mailSender.send(mailMessage);
     }
 }

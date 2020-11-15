@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @Data
 @AllArgsConstructor
-public class SecurityUser implements UserDetails {
+public class CustomUserDetails implements UserDetails {
 
     private final UUID id;
     private final String firstName;
@@ -48,7 +48,7 @@ public class SecurityUser implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return status;
+        return true;
     }
 
     @Override

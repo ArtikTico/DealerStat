@@ -19,4 +19,6 @@ public interface UserService {
 
     User rejectedUser(UUID id);
 
+    boolean activateUser(String code);
+
 }

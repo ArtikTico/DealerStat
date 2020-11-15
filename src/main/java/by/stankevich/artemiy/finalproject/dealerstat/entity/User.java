@@ -1,5 +1,6 @@
 package by.stankevich.artemiy.finalproject.dealerstat.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -33,12 +34,12 @@ public class User extends AuditModel {
     @NotNull
     private String lastName;
 
-    @Size(min = 5, max = 100)
+    @Size(min = 8, max = 100, message = "password length should be equals 8 or more")
     @NotNull
     private String password;
 
     @Column(name = "email", unique = true)
-    @Size(max = 50)
+    @Size(max = 100)
     @NotNull
     @Email(message = "email address should be correctly", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
     private String email;
@@ -49,5 +50,8 @@ public class User extends AuditModel {
     private boolean status;
 
     private double avgRating;
+
+    @JsonIgnore
+    private String activationCode;
 
 }
