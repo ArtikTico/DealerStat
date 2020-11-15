@@ -29,7 +29,7 @@ public class AuthenticationRestController {
     @Autowired
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
-    private JwtTokenProvider jwtTokenProvider;
+    private final JwtTokenProvider jwtTokenProvider;
 
     public AuthenticationRestController(AuthenticationManager authenticationManager, UserService userService, JwtTokenProvider jwtTokenProvider) {
         this.authenticationManager = authenticationManager;
@@ -47,12 +47,12 @@ public class AuthenticationRestController {
                 throw new UsernameNotFoundException("user does not exists");
             }
             String token = jwtTokenProvider.createToken(requestDTO.getEmail(), user.getRole().name());
-            Map<Object, Object> response = new HashMap<>();
+            Map<String, String> response = new HashMap<>();
             response.put("email", requestDTO.getEmail());
             response.put("token", token);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return ResponseEntity.ok(response);
         } catch (AuthenticationException exception) {
-            return new ResponseEntity<>("Invalid email and password", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Invalid email and password", HttpStatus.FORBIDDEN);
         }
     }
 
