@@ -42,11 +42,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
+                    .antMatchers(REGISTRATION_ENDPOINTS).permitAll()
+                    .antMatchers(LOGIN_ENDPOINT).permitAll()
                     .antMatchers("/").permitAll()
                     .antMatchers(ADMIN_ENDPOINTS).hasRole(UserRole.ADMIN.name())
-                    .antMatchers(LOGIN_ENDPOINT).permitAll()
-                    .antMatchers(REGISTRATION_ENDPOINTS).permitAll()
-                .anyRequest().authenticated()
+                    .anyRequest().authenticated()
                 .and()
                 .apply(new JwtConfigurer(jwtTokenProvider));
     }
