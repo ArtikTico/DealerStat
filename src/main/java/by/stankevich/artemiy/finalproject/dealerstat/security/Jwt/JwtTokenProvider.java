@@ -13,12 +13,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
-import java.io.Serializable;
 import java.util.Base64;
 import java.util.Date;
 
 @Component
-public class JwtTokenProvider implements Serializable {
+public class JwtTokenProvider {
 
     private final UserDetailsService userDetailsService;
 
@@ -26,7 +25,6 @@ public class JwtTokenProvider implements Serializable {
     public JwtTokenProvider(@Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
-    private static final long serialVersionUID = -2550185165626007488L;
 
     @Value("${jwt.expired}")
     private long jwtTokenValidityInMiliseconds;

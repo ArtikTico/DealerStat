@@ -24,9 +24,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         User userEntity = userRepository.findUserByEmail(email);
         if (userEntity == null) {
             throw new UsernameNotFoundException("User with email " + email + " not found");
-        } else {
-            return SecurityUserFactory.fromEntityUserToCustomUserDetails(userEntity);
         }
+        return SecurityUserFactory.fromEntityUserToCustomUserDetails(userEntity);
+
 
     }
 }
